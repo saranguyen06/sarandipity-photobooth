@@ -16,7 +16,7 @@
 
 :root {
   --light-blue: #d4f1ff;
-  --blue: #a3defb;
+  --blue: #99ddff;
   --brown: #5c3316;
   --cream: #fffaed;
   --color-ink: #1B1512;
@@ -167,7 +167,7 @@ button {
   padding: 0.75rem 1.5rem;
   font-family: var(--font-utility);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
   cursor: pointer;
   text-decoration: none;
   display: inline-flex;
@@ -204,6 +204,80 @@ button {
 }
 
 .btn--text:hover {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------
+   Home page
+--------------------------------------------------------- */
+.home-page {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.home-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 5rem;
+  color: var(--brown);
+}
+
+.home-h2 {
+  font-family: var(--font-utility);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 3rem;
+  letter-spacing: 0.15rem;
+  color: var(--blue);
+}
+
+.home-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.home-image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1000px;
+  height: 470px;
+}
+
+.home-image-container a {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.home-image-container img,
+.home-image-container a img {
+  position: absolute;
+  top: 0;
+  width: 70%;
+  left: 15%;
+  object-fit: cover;
+  transition: opacity 0.3s ease-in-out;
+} 
+
+/* Initially hide the hover image by making it transparent */
+.home-image-container .hover-img {
+  opacity: 0;
+  z-index: 2;
+}
+
+/* When the user hovers over the container, reveal the hover image */
+.home-image-container:hover .hover-img {
   opacity: 1;
 }
 
@@ -583,6 +657,12 @@ button {
 @media (max-width: 480px) {
   .navbar {
     padding: 0.9rem 1rem;
+  }
+
+  .home-page {
+    text-align: center;
+    max-width: 640px;
+
   }
 
   .auth-card {

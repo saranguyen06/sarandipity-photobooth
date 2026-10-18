@@ -1,9 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
     const { user, signOut } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
+
+    if (location.pathname === '/') {
+        return null
+    }
 
     async function handleSignOut() {
         await signOut()
