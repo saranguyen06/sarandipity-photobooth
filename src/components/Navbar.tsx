@@ -13,11 +13,10 @@ export default function Navbar() {
     return (
         <header className="navbar">
         <Link to="/" className="navbar__brand">
-            <span className="navbar__brand-mark">◎</span>
-            Sara-ndipity Booth
+            Sarandipity Booth
         </Link>
         <nav className="navbar__links">
-            <Link to="/">Booth</Link>
+            <Link to="/booth">Booth</Link>
             {user && <Link to="/gallery">My Photos</Link>}
             {user ? (
             <button className="navbar__ghost-btn" onClick={handleSignOut}>

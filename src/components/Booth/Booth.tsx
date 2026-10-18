@@ -90,11 +90,6 @@ export default function Booth() {
     return (
         <div className="booth-page">
             <div className="viewfinder">
-                <div className="viewfinder__corner viewfinder__corner--tl" />
-                <div className="viewfinder__corner viewfinder__corner--tr" />
-                <div className="viewfinder__corner viewfinder__corner--bl" />
-                <div className="viewfinder__corner viewfinder__corner--br" />
-
                     {error ? (
                         <div className="viewfinder__error">{error}</div>
                     ) : (
@@ -119,7 +114,7 @@ export default function Booth() {
                         </div>
                     )}
 
-                    {!ready && !error && <div className="viewfinder__loading">Warming up the flashbulb…</div>}
+                    {!ready && !error && <div className="viewfinder__loading">Warming up the flash…</div>}
                 </div>
 
                 <div className="booth-controls">

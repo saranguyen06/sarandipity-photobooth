@@ -47,7 +47,6 @@ export default function Signup() {
     return (
         <div className="auth-page">
             <form className="auth-card" onSubmit={handleSubmit}>
-                <p className="auth-card__eyebrow">Get started</p>
                 <h1 className="auth-card__title">Create an account</h1>
 
                 <label className="field">
