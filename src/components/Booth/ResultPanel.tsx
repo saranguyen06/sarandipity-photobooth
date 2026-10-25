@@ -20,6 +20,7 @@ export default function ResultPanel({ imageDataUrl, kind, onRetake }: ResultPane
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [printed, setPrinted] = useState(false)
 
   function handleDownload() {
     downloadDataUrl(imageDataUrl, `snapshot-booth-${kind}-${Date.now()}.jpg`)
@@ -86,11 +87,21 @@ export default function ResultPanel({ imageDataUrl, kind, onRetake }: ResultPane
 
   return (
     <div className="result-panel">
-      <div className={`result-panel__frame result-panel__frame--${kind}`}>
-        <img src={imageDataUrl} alt="Your capture" />
+      <div className="printer">
+        <div className="printer__slot" aria-hidden="true" />
+        <div className={`printer__output ${printed ? 'is-printed' : ''}`}>
+          <div
+            className={`result-panel__frame result-panel__frame--${kind} printer__paper printer__paper--${kind}`}
+            onAnimationEnd={(e) => {
+              if (e.animationName === 'print-out') setPrinted(true)
+            }}
+          >
+            <img src={imageDataUrl} alt="Your capture" />
+          </div>
+        </div>
       </div>
 
-      <div className="result-panel__actions">
+      <div className={`result-panel__actions ${printed ? 'is-ready' : ''}`} inert={!printed}>
         <button className="btn btn--primary" onClick={handleDownload}>
           Download
         </button>

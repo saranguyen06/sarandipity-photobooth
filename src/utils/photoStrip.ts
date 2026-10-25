@@ -41,19 +41,17 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 // typewriter-style timestamp at the bottom.
 export async function composeStrip(
   frameDataUrls: string[],
-  { label = 'PHOTOBOOTH' }: { label?: string } = {}
 ): Promise<string> {
   const images = await Promise.all(frameDataUrls.map(loadImage))
 
   const PADDING = 36
   const GAP = 24
-  const SPROCKET_ZONE = 34
   const FRAME_W = 480
   const FRAME_H = Math.round((images[0].height / images[0].width) * FRAME_W)
   const FOOTER_H = 90
 
   const canvas = document.createElement('canvas')
-  canvas.width = FRAME_W + PADDING * 2 + SPROCKET_ZONE * 2
+  canvas.width = FRAME_W + PADDING * 2
   canvas.height =
     PADDING * 2 + FRAME_H * images.length + GAP * (images.length - 1) + FOOTER_H
 
@@ -61,7 +59,7 @@ export async function composeStrip(
   if (!ctx) throw new Error('Could not get 2D canvas context')
 
   // Paper background
-  ctx.fillStyle = '#EFE3C8'
+  ctx.fillStyle = '#fffaed'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
   // Subtle paper grain via noise-like speckles
@@ -72,22 +70,9 @@ export async function composeStrip(
     ctx.fillRect(x, y, 1, 1)
   }
 
-  // Sprocket holes down both edges
-  const holeRadius = 7
-  const holeSpacing = 30
-  ctx.fillStyle = '#5B1A24'
-  for (let side = 0; side < 2; side++) {
-    const cx = side === 0 ? SPROCKET_ZONE / 2 + 6 : canvas.width - SPROCKET_ZONE / 2 - 6
-    for (let y = 20; y < canvas.height - FOOTER_H; y += holeSpacing) {
-      ctx.beginPath()
-      ctx.arc(cx, y, holeRadius, 0, Math.PI * 2)
-      ctx.fill()
-    }
-  }
-
   // Frames
   images.forEach((img, i) => {
-    const x = PADDING + SPROCKET_ZONE
+    const x = PADDING
     const y = PADDING + i * (FRAME_H + GAP)
     ctx.save()
     ctx.shadowColor = 'rgba(27, 21, 18, 0.25)'
@@ -100,33 +85,6 @@ export async function composeStrip(
     ctx.lineWidth = 2
     ctx.strokeRect(x, y, FRAME_W, FRAME_H)
   })
-
-  // Footer stamp
-  const footerY = canvas.height - FOOTER_H
-  ctx.strokeStyle = 'rgba(27, 21, 18, 0.25)'
-  ctx.lineWidth = 1
-  ctx.beginPath()
-  ctx.moveTo(PADDING, footerY + 14)
-  ctx.lineTo(canvas.width - PADDING, footerY + 14)
-  ctx.stroke()
-
-  ctx.fillStyle = '#1B1512'
-  ctx.textAlign = 'left'
-  ctx.font = '600 22px "Special Elite", monospace'
-  ctx.fillText(label, PADDING, footerY + 50)
-
-  ctx.textAlign = 'right'
-  ctx.font = '16px "Special Elite", monospace'
-  const dateStr = new Date()
-    .toLocaleString('en-US', {
-      month: '2-digit',
-      day: '2-digit',
-      year: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-    .toUpperCase()
-  ctx.fillText(dateStr, canvas.width - PADDING, footerY + 50)
 
   return canvas.toDataURL('image/jpeg', 0.92)
 }

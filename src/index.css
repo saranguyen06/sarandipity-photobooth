@@ -476,6 +476,58 @@ button {
   width: 100%;
 }
 
+.printer { 
+  --printer-gap: 20px;
+  padding-bottom: calc(9px + var(--printer-gap));
+  width: min(100%, 420px); 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+}
+
+.printer__slot {
+  position: relative; 
+  z-index: 2; 
+  width: 100%; 
+  height: 18px; 
+  border-radius: 9px;
+  background: var(--color-ink);
+}
+
+/* Hides the paper while it is still "inside". The -9px (half the slot)
+   makes it appear from behind the lip. */
+.printer__output { 
+  width: 92%; 
+  margin-top: -9px; 
+  overflow: hidden; 
+  transition: transform 0.35s ease-out;
+}
+
+.printer__output.is-printed {
+  transform: translateY(calc(9px + var(--printer-gap)));
+}
+
+/* steps() makes the paper advance in jerks, like a printer feed */
+.printer__paper { animation: print-out 3.2s steps(32, end) both; }
+
+.printer__paper--single { 
+  animation-duration: 2s; 
+  animation-timing-function: steps(20, end); 
+}
+
+@keyframes print-out { 
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); } 
+} 
+
+/* Washed-out to full colour, like instant film developing */
+.printer__paper img { animation: develop 2.6s ease-out 0.8s both; }
+
+@keyframes develop { 
+  from { filter: brightness(1.7) contrast(.5) saturate(0); } 
+  to { filter: none; } 
+}
+
 .result-panel__frame {
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -497,6 +549,14 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.75rem;
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity .4s ease; 
+}
+
+.result-panel__actions.is-ready { 
+  opacity: 1; 
+  pointer-events: auto; 
 }
 
 /* ---------------------------------------------------------
